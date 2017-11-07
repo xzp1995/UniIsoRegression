@@ -1,15 +1,14 @@
-\name{pre_2d_increasing}
+\name{reg_2d}
 \Rdversion{1.1}
-\alias{pre_2d_increasing}
+\alias{reg_2d}
 \title{
-    Prefix Regression on 2D input.
+    Isotonic Regression on 2D input.
 }
 \description{
-    Prefix isotonic regression on 2D input with L1, L2 
-    metric and other options.
+    Isotonic regression on weighted or unweighted 2D input with L1, L2 metric and other options.
 }
 \usage{
-    pre_2d_increasing(y_vec, w_vec, metric)
+    reg_2d(y_vec, w_vec, metric)
 }
 \arguments{
     \item{y_vec}{
@@ -35,31 +34,30 @@
     }
 }
 \details{
-    See the paper about unimodal regression via prefix isotonic regression in the reference.
+    See the paper about 2D regression in the reference.
 }
 \value{
     A 2D NumericMatrix of the regression result which has the same size of y_vec.
 }
 \references{
-    Quentin F.Stout; Unimodal Regression via Prefix Isotonic Regression;
-    Computational Statistics and Data Analysis 53 (2008), pp. 289-297
+    Q.F. Stout, Isotonic median regression via partitioning, Algorithmica 66 (2013), pp. 93-112 doi.org/10.1007/s00453-012-9628-4
 }
-\author{Zhipeng Xu, Chenkai Sun, Aman Karunakaran
+\author{Zhipeng Xu, Chenkai Sun, Aman Karunakaran, Quentin Stout
     \email{xzhipeng@umich.edu}
-    \url{https://github.com/xzp1995/PreReg}
+    \url{https://github.com/xzp1995/UniIsoRegression}
 }
 \examples{
-    library(PrefixRegression)
+    library(UniIsoRegression)
     #===2d monotonic===
     y=matrix(c(2, 4, 3, 1, 5, 7,9,0), nrow=2, ncol=4, byrow = TRUE)
     weight=matrix(c(1, 10, 3, 9, 5, 7,9,10), nrow=2, ncol=4, byrow = TRUE)
 
     #l_1 metric
-    temp=PrefixRegression::pre_2d_increasing(y, weight, metric = 1)
+    temp=UniIsoRegression::reg_2d(y, weight, metric = 1)
     print(temp)
 
     #l_2 metric
-    temp=PrefixRegression::pre_2d_increasing(y, weight, metric = 2)
+    temp=UniIsoRegression::reg_2d(y, weight, metric = 2)
     print(temp)
 }
 

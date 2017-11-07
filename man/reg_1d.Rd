@@ -1,14 +1,14 @@
-\name{pre_1d}
+\name{reg_1d}
 \Rdversion{1.1}
-\alias{pre_1d}
+\alias{reg_1d}
 \title{
-    Prefix Regression on 1D input.
+    Isotonic and Unimodal Regression on 1D input.
 }
 \description{
-    Prefix isotonic and unimodal regression on 1D input with L1, L2 and Linf metric and other options.
+    Isotonic and unimodal regression on weighted or unweighted 1D input with L1, L2 and Linf metric and other options.
 }
 \usage{
-    pre_1d(y_vec, w_vec, metric, unimodal = FALSE, decreasing = FALSE)
+    reg_1d(y_vec, w_vec, metric, unimodal = FALSE, decreasing = FALSE)
 }
 \arguments{
     \item{y_vec}{
@@ -49,30 +49,30 @@
     A vector of the regression result which has the same size of y_vec.
 }
 \references{
-    Quentin F.Stout; Unimodal Regression via Prefix Isotonic Regression;
-    Computational Statistics and Data Analysis 53 (2008), pp. 289-297
+    Quentin F.Stout; Unimodal Regression via Prefix Isotonic Regression Computational Statistics and Data Analysis 53 (2008), pp. 289-297;
+    Spouge, J., Wan, H. & Wilbur, W. Journal of Optimization Theory and Applications (2003) 117: 585-605 doi.org/10.1023/A:1023901806339
 }
-\author{Zhipeng Xu, Chenkai Sun, Aman Karunakaran
+\author{Zhipeng Xu, Chenkai Sun, Aman Karunakaran, Quentin Stout
     \email{xzhipeng@umich.edu}
-    \url{https://github.com/xzp1995/PreReg}
+    \url{https://github.com/xzp1995/UniIsoRegression}
 }
 \examples{
-    library(PrefixRegression)
+    library(UniIsoRegression)
 
     #===1d monotonic===
     y=c(1,3,6,7,-1)
     weight=c(1,3,4,9,10)
 
     #l_1 metric decreasing
-    temp=PrefixRegression::pre_1d(y, weight, metric = 1, decreasing = TRUE)
+    temp=UniIsoRegression::reg_1d(y, weight, metric = 1, decreasing = TRUE)
     print(temp)
 
     #l_2 metric unimodel
-    temp=PrefixRegression::pre_1d(y, weight, metric = 2, unimodal = TRUE)
+    temp=UniIsoRegression::reg_1d(y, weight, metric = 2, unimodal = TRUE)
     print(temp)
 
     #l_infinity metric increasing
-    temp=PrefixRegression::pre_1d(y, weight, metric = 3)
+    temp=UniIsoRegression::reg_1d(y, weight, metric = 3)
     print(temp)
 }
 

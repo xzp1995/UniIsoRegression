@@ -176,8 +176,8 @@ void merge(std::vector<double>*& ltHeapValue_a, std::vector<double>*& ltHeapWeig
                 medWeight_a, ltWeight_a, gtWeight_a, medVal_b, medWeight_b);
 }
 
-// [[Rcpp::export(name = ".pre_1d_l1")]]
-std::vector<double> pre_1d_l1(std::vector<double>& ycoords,
+// [[Rcpp::export(name = ".reg_1d_l1")]]
+std::vector<double> reg_1d_l1(std::vector<double>& ycoords,
                               std::vector<double>& weights, std::vector<double>& error, bool decreasing = false) {
   if (decreasing) {
     std::reverse(ycoords.begin(), ycoords.end());
@@ -290,7 +290,7 @@ std::vector<double> uni_1d_l1(std::vector<double>& ycoords, std::vector<double>&
   size_t size = ycoords.size();
 
   std::vector<double> incErrors(size, 0);
-  std::vector<double> inc_reg = pre_1d_l1(ycoords, weights, incErrors);
+  std::vector<double> inc_reg = reg_1d_l1(ycoords, weights, incErrors);
 
   //reverse std::vectors, then call prefix L1 on it again
 
@@ -298,7 +298,7 @@ std::vector<double> uni_1d_l1(std::vector<double>& ycoords, std::vector<double>&
   std::reverse(weights.begin(), weights.end());
 
   std::vector<double> decErrors(size, 0);
-  std::vector<double> dec_reg = pre_1d_l1(ycoords, weights, decErrors);
+  std::vector<double> dec_reg = reg_1d_l1(ycoords, weights, decErrors);
 
 
   //now find the best point for the mode, and copy the data used in
@@ -345,8 +345,8 @@ public:
   int m, l, r;
 };
 
-// [[Rcpp::export(name = ".pre_1d_l2")]]
-std::vector<double> pre_1d_l2(std::vector<double> &y_vec, std::vector<double> &w_vec, bool decreasing = false) {
+// [[Rcpp::export(name = ".reg_1d_l2")]]
+std::vector<double> reg_1d_l2(std::vector<double> &y_vec, std::vector<double> &w_vec, bool decreasing = false) {
   if (decreasing) {
     std::reverse(y_vec.begin(), y_vec.end());
     std::reverse(w_vec.begin(), w_vec.end());
@@ -583,8 +583,8 @@ std::vector<double> uni_1d_l2(std::vector<double>& y_vec, std::vector<double>& w
 
 
 
-// [[Rcpp::export(name = ".pre_1d_linf")]]
-std::vector<double> pre_1d_linf(std::vector<double>& y, bool decreasing = false) {
+// [[Rcpp::export(name = ".reg_1d_linf")]]
+std::vector<double> reg_1d_linf(std::vector<double>& y, bool decreasing = false) {
 
   int size = (int)y.size();
 
@@ -1202,7 +1202,7 @@ NumericMatrix pre_2d_l2_inc(NumericMatrix & w, NumericMatrix &data) {
 }
 
 // [[Rcpp::export]]
-std::vector<double> pre_1d(std::vector<double>& y_vec, std::vector<double>& w_vec, int metric,
+std::vector<double> reg_1d(std::vector<double>& y_vec, std::vector<double>& w_vec, int metric,
                            bool unimodal = false, bool decreasing = false) {
 
   if (y_vec.size() == 0) stop("Empty data");
@@ -1219,10 +1219,10 @@ std::vector<double> pre_1d(std::vector<double>& y_vec, std::vector<double>& w_ve
     error.resize(y_vec.size(), 0);
     if (!unimodal) {
       if (decreasing) {
-        out = pre_1d_l1(y_vec, w_vec, error, true);
+        out = reg_1d_l1(y_vec, w_vec, error, true);
       }
       else {
-        out = pre_1d_l1(y_vec, w_vec, error);
+        out = reg_1d_l1(y_vec, w_vec, error);
       }
     }
     else {
@@ -1232,10 +1232,10 @@ std::vector<double> pre_1d(std::vector<double>& y_vec, std::vector<double>& w_ve
   else if (metric == 2) {
     if (!unimodal) {
       if (decreasing) {
-        out = pre_1d_l2(y_vec, w_vec, true);
+        out = reg_1d_l2(y_vec, w_vec, true);
       }
       else {
-        out = pre_1d_l2(y_vec, w_vec);
+        out = reg_1d_l2(y_vec, w_vec);
       }
     }
     else {
@@ -1245,10 +1245,10 @@ std::vector<double> pre_1d(std::vector<double>& y_vec, std::vector<double>& w_ve
   else if (metric == 3) {
     if (!unimodal) {
       if (decreasing) {
-        out = pre_1d_linf(y_vec, true);
+        out = reg_1d_linf(y_vec, true);
       }
       else {
-        out = pre_1d_linf(y_vec);
+        out = reg_1d_linf(y_vec);
       }
     }
     else {
@@ -1262,7 +1262,7 @@ std::vector<double> pre_1d(std::vector<double>& y_vec, std::vector<double>& w_ve
 }
 
 // [[Rcpp::export]]
-NumericMatrix pre_2d_increasing(NumericMatrix& y_vec,
+NumericMatrix reg_2d(NumericMatrix& y_vec,
                                 NumericMatrix& w_vec, int metric
 ) {
 
